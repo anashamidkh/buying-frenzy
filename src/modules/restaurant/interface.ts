@@ -1,4 +1,4 @@
 export interface IOperationalTime {
-    openAt: string;
-    closeAt: string;
+  openAt: string;
+  closeAt: string;
 }

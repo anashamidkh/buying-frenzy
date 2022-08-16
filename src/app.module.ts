@@ -38,7 +38,7 @@ import { RestaurantModule } from './modules/restaurant/restaurant.module';
       }),
       inject: [ConfigService],
     }),
-    RestaurantModule
+    RestaurantModule,
   ],
   controllers: [AppController],
   providers: [AppService],
