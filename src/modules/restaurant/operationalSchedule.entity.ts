@@ -1,4 +1,4 @@
-import { EntityBase } from 'src/common/entityBase';
+import { EntityBase } from '../../common/entityBase';
 import {
   Column,
   Entity,

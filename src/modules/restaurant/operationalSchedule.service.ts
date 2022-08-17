@@ -110,7 +110,7 @@ export class OperationalScheduleService {
     restaurantId?: number,
   ): OperationalSchedule {
     const _operationalSchedule = new OperationalSchedule();
-    _operationalSchedule.restaurantId = restaurantId || 0;
+    _operationalSchedule.restaurantId = restaurantId;
     _operationalSchedule.day = day.trim().toLowerCase();
     _operationalSchedule.openAt = openAt;
     _operationalSchedule.closeAt = closeAt;
