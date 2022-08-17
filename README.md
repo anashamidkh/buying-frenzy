@@ -247,5 +247,6 @@ http://localhost:3000/api/documentation
 ```
 
 ## Note
-- Test cases are using same database. Modifying actual database during execution of test cases is not the best approach. Best approach is to create seperate test database container and seed fake data or mock the database layer. To reduce the complexity, I have used the actual database in tests.
+- All time related fields and operations are in UTC.
+- Test cases are using the same database. Modifying actual database during execution of test cases is not the best approach. Best approach is to create seperate test database container and seed fake data or mock the database layer. To reduce the complexity, I have used the actual database in tests.
 - Pushing .env file with actual credentials in repository is not a good practise. In actual we keep credentials in secret manager or task definitions etc, and fetch those at time of deployment pipeline.
