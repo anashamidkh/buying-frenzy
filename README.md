@@ -237,6 +237,8 @@ npm run test:cov
 - Functions 96.29% (52/54)
 - Lines 97.55% (279/286)
 
+**[View Coverage Report](https://drive.google.com/file/d/1O23TEBVLlKoxWx9K_79XhGt7hjtFt9sz/view)**
+
 ## Documentation
 For API documentation, access swagger page:
 
