@@ -1,3 +1,4 @@
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import {
   IsDateString,
@@ -12,19 +13,25 @@ import { Restaurant } from '../restaurant.entity';
 
 export namespace GetRestaurants {
   export class QueryParams {
+    @ApiProperty()
+    @ApiPropertyOptional()
     @IsDateString()
     @IsOptional()
     dateTime: Date;
 
+    @ApiProperty()
     @Transform(parseIntTransformer)
     @IsInt()
     @IsPositive()
     limit: number = 20;
 
+    @ApiProperty()
     @Transform(parseIntTransformer)
     @IsInt()
     offset: number = 0;
 
+    @ApiProperty()
+    @ApiPropertyOptional()
     @IsString()
     @IsOptional()
     name: string;

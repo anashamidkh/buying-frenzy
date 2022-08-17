@@ -1,19 +1,23 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsInt, IsPositive, IsString } from 'class-validator';
 import { parseIntTransformer } from 'src/common/validators';
 
 export namespace PlaceOrder {
   export class Params {
+    @ApiProperty()
     @Transform(parseIntTransformer)
     @IsInt()
     @IsPositive()
     userId: number;
 
+    @ApiProperty()
     @Transform(parseIntTransformer)
     @IsInt()
     @IsPositive()
     restaurantId: number;
 
+    @ApiProperty()
     @IsString()
     dishName: string;
   }
