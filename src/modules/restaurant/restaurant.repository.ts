@@ -64,4 +64,19 @@ export class RestaurantRepository extends Repository<Restaurant> {
 
     return query;
   }
+
+  public getRestaurantAndMenuById(
+    restaurantId: number,
+  ): SelectQueryBuilder<Restaurant> {
+    return this.createQueryBuilder('restaurant')
+      .innerJoin('restaurant.menus', 'menu')
+      .select([
+        'restaurant.id',
+        'restaurant.name',
+        'restaurant.cashBalance',
+        'menu.dishName',
+        'menu.price',
+      ])
+      .where('restaurant.id = :restaurantId', { restaurantId });
+  }
 }

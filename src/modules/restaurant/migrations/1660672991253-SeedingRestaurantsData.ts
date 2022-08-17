@@ -5,7 +5,7 @@ import { OperationalSchedule } from '../operationalSchedule.entity';
 import { OperationalScheduleService } from '../operationalSchedule.service';
 import { Restaurant } from '../restaurant.entity';
 
-export class SeedingRestaurantsData1660473036753 implements MigrationInterface {
+export class SeedingRestaurantsData1660672991253 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const data = JSON.parse(
       readFileSync('./src/data/restaurant_with_menu.json').toString(),

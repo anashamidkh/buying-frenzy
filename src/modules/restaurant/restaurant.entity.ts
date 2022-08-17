@@ -2,6 +2,7 @@ import { EntityBase } from '../../common/entityBase';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Menu } from './menu.entity';
 import { OperationalSchedule } from './operationalSchedule.entity';
+import { Order } from '../order/order.entity';
 
 @Entity()
 export class Restaurant extends EntityBase {
@@ -22,4 +23,7 @@ export class Restaurant extends EntityBase {
     (operationalSchedule) => operationalSchedule.restaurant,
   )
   public operationalSchedule: OperationalSchedule[];
+
+  @OneToMany((type) => Order, (order) => order.restaurant)
+  public order: Order[];
 }

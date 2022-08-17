@@ -10,7 +10,7 @@ import { RestaurantRepository } from './restaurant.repository';
 export class RestaurantService {
   /**
    *
-   * @param restaurantRepository
+   * @param {RestaurantRepository} restaurantRepository
    */
   constructor(private restaurantRepository: RestaurantRepository) {}
 
@@ -58,5 +58,18 @@ export class RestaurantService {
         params?.lessThan,
       )
       .getMany();
+  }
+
+  /**
+   * Get restaurant and their menu by restaurant id
+   * @param {number} restaurantId
+   * @returns {Promise<Restaurant>}
+   */
+  public async getRestaurantAndMenuById(
+    restaurantId: number,
+  ): Promise<Restaurant> {
+    return await this.restaurantRepository
+      .getRestaurantAndMenuById(restaurantId)
+      .getOne();
   }
 }
