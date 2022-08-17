@@ -38,12 +38,14 @@ $ npm run start:prod
 ## Important Commands
 
 ```bash
-# Command to run migrations. Migrations will create database schema and seed data.
+# Command to run migrations. Migrations will create database schema and insert seed data.
 npm run typeorm:run
 
 # Command to revert migration. This will revert last executed migration.
 npm run typeorm:revert
 ```
+## Database ERD
+- [View ERD](https://drive.google.com/file/d/1udI-GZyOGd-Sfcmn2us6EjcAIYY5uvec/view)
 
 ## APIs
 1. List all restaurants / List all restaurants that are open at a certain datetime:
@@ -104,7 +106,7 @@ npm run typeorm:revert
    ```
 2. List top y restaurants that have more or less than x number of dishes within a price range, ranked alphabetically. More or less (than x) is a parameter that the API allows the consumer to enter:
    
-   **Description:** The API will return restaurants names on basis of provided parameters. In case, if both greaterThan and lessThan is passed in request, then priority will be given to greaterThan automatically. If both are not provided in request then error will be thrown.
+   **Description:** The API will return restaurant's names on basis of provided parameters. In case, if both greaterThan and lessThan is passed in request, then priority will be given to greaterThan automatically. If both are not provided in request then error will be thrown.
    
    **URL:** ```{{URL}}/restaurants/top?limit=3&greaterThan=1&lessThan=3&minPrice=10.15&maxPrice=15```
    
@@ -196,7 +198,7 @@ npm run typeorm:revert
    ```
 4. Process a user purchasing a dish from a restaurant, handling all relevant data changes in an atomic transaction. Do watch out for potential race conditions that can arise from concurrent transactions:
    
-   **Description:** The API creates order. After validating payload, the API creates order, debits the cash balance of user and credits the cash balance of restaurant. Database transactions are atomic, and if any error occurs during process no records would be inserted in database.
+   **Description:** This API is responsible for creating order. After validating payload, the API creates order, debits the cash balance of user and credits the cash balance of restaurant. Database transactions are atomic, and if any error occurs during process no records would be committed in database.
    
    **URL:** ```{{URL}}/order```
    
@@ -222,9 +224,26 @@ npm run typeorm:revert
    }
    ```
    
+## Test Coverage
+
+```bash
+#To generate coverage report
+npm run test:cov
+```
+
+**All Files:**
+- Statements 97.97% (323/330)
+- Branches 74.41% (32/43)
+- Functions 96.29% (52/54)
+- Lines 97.55% (279/286)
+
 ## Documentation
 For API documentation, access swagger page:
 
 ```bash
 http://localhost:3000/api/documentation
 ```
+
+## Note
+- Test cases are using same database. Modifying actual database during execution of test cases is not the best approach. Best approach is to create seperate test database container and seed fake data or mock the database layer. To reduce the complexity, I have used the actual database in tests.
+- Pushing .env file with actual credentials in repository is not a good practise. In actual we keep credentials in secret manager or task definitions etc, and fetch those at time of deployment pipeline.
