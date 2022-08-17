@@ -1,35 +1,23 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
 ## Description
+Backend service and a database for a food delivery platform
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Technology Stack
+- Node.js
+- NestJS
+- Javascript
+- Typescript
+- TypeORM
+- PostgreSQL
+- Docker
+- Swagger
 
-## Installation
+## How to setup?
 
 ```bash
+$ git clone {{REPOSITORY-URL}}
 $ npm install
+$ docker compose up -d
+$ npm run typeorm:run
 ```
 
 ## Running the app
@@ -41,33 +29,202 @@ $ npm run start
 # watch mode
 $ npm run start:dev
 
+# debug mode
+$ npm run start:debug
+
 # production mode
 $ npm run start:prod
 ```
-
-## Test
+## Important Commands
 
 ```bash
-# unit tests
-$ npm run test
+# Command to run migrations. Migrations will create database schema and seed data.
+npm run typeorm:run
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+# Command to revert migration. This will revert last executed migration.
+npm run typeorm:revert
 ```
 
-## Support
+## APIs
+1. List all restaurants / List all restaurants that are open at a certain datetime:
+   
+   **Description:** The API returns restaurants on basis of optional parameters. Pagination is supported by default. In case, if limit & offset parameters are not passed in request, then 20 and 0 get sets automatically.
+   
+   **URL:** ```{{URL}}/restaurants?dateTime=2022-08-15 14:32:00&limit=3&offset=0```
+   
+   **HTTP Method:** ```GET```
+   
+   **Query Parameters:**
+   ```
+   dateTime     //Optional - e.g: 2022-08-15 14:32:00
+   limit        //Optional - e.g: 3
+   offset       //Optional - e.g: 0
+   ```
+   
+   **Sample Response:**
+   ```json
+   {
+    "totalRecords": 866,
+    "restaurants": [
+        {
+            "name": "'Ulu Ocean Grill and Sushi Lounge",
+            "cashBalance": 4483.84,
+            "operationalSchedule": [
+                {
+                    "day": "mon",
+                    "openAt": "14:30:00",
+                    "closeAt": "20:00:00"
+                }
+            ]
+        },
+        {
+            "name": "024 Grille",
+            "cashBalance": 4882.81,
+            "operationalSchedule": [
+                {
+                    "day": "mon",
+                    "openAt": "11:45:00",
+                    "closeAt": "16:45:00"
+                }
+            ]
+        },
+        {
+            "name": "100% de Agave",
+            "cashBalance": 4629.91,
+            "operationalSchedule": [
+                {
+                    "day": "mon",
+                    "openAt": "05:30:00",
+                    "closeAt": "18:00:00"
+                }
+            ]
+        }
+      ]
+    }
+   ```
+2. List top y restaurants that have more or less than x number of dishes within a price range, ranked alphabetically. More or less (than x) is a parameter that the API allows the consumer to enter:
+   
+   **Description:** The API will return restaurants names on basis of provided parameters. In case, if both greaterThan and lessThan is passed in request, then priority will be given to greaterThan automatically. If both are not provided in request then error will be thrown.
+   
+   **URL:** ```{{URL}}/restaurants/top?limit=3&greaterThan=1&lessThan=3&minPrice=10.15&maxPrice=15```
+   
+   **HTTP Method:** ```GET```
+   
+   **Query Parameters:**
+   ```
+   limit                //Mandatory - Will return top Y restaurants on basis of it. e.g: 3
+   greaterThan          //Optional - This will be used for more than x number of dishes. e.g: 1
+   lessThan             //Optional - This will be used for less than x number of dishes. e.g: 3
+   minPrice             //Mandatory - This will be used for starting price range
+   maxPrice             //Mandatory - This will be used for ending price range
+   ```
+   
+   **Sample Response:**
+   ```json
+   [
+    {
+        "name": "024 Grille"
+    },
+    {
+        "name": "100% de Agave"
+    },
+    {
+        "name": "100% Mexicano Restaurant"
+    }
+   ]
+   ```
+3. Search for restaurants, ranked by relevance to search term:
+   
+   **Description:** The API returns restaurants on basis of relevant name. Pagination is supported by default. In case, if limit & offset parameters are not passed in request, then 20 and 0 get sets automatically.
+   
+   **URL:** ```{{URL}}/restaurants?name=mexican```
+   
+   **HTTP Method:** ```GET```
+   
+   **Query Parameters:**
+   ```
+   name           //Optional - e.g: mexican
+   ```
+   
+   **Sample Response:**
+   ```json
+   {
+    "totalRecords": 8,
+    "restaurants": [
+        {
+            "name": "Agaves Mexican Grill",
+            "cashBalance": 4766.88,
+            "operationalSchedule": [
+                {
+                    "day": "mon",
+                    "openAt": "07:15:00",
+                    "closeAt": "00:15:00"
+                },
+                {
+                    "day": "tues",
+                    "openAt": "15:00:00",
+                    "closeAt": "03:00:00"
+                },
+                ......
+                {
+                    "day": "sat",
+                    "openAt": "10:45:00",
+                    "closeAt": "23:00:00"
+                }
+            ]
+        },
+        {
+            "name": "Chayo Mexican Kitchen + Tequila Bar",
+            "cashBalance": 3432.97,
+            "operationalSchedule": [
+                {
+                    "day": "mon",
+                    "openAt": "07:15:00",
+                    "closeAt": "10:00:00"
+                },
+                ......
+                {
+                    "day": "sun",
+                    "openAt": "12:00:00",
+                    "closeAt": "01:15:00"
+                }
+            ]
+        }
+        ......
+    ]
+   }
+   ```
+4. Process a user purchasing a dish from a restaurant, handling all relevant data changes in an atomic transaction. Do watch out for potential race conditions that can arise from concurrent transactions:
+   
+   **Description:** The API creates order. After validating payload, the API creates order, debits the cash balance of user and credits the cash balance of restaurant. Database transactions are atomic, and if any error occurs during process no records would be inserted in database.
+   
+   **URL:** ```{{URL}}/order```
+   
+   **HTTP Method:** ```POST```
+   
+   **Body:**
+   ```
+   {
+      "userId": 1,
+      "dishName": "Postum cereal coffee",
+      "restaurantId": 1
+   }
+   ```
+   
+   **Sample Response:**
+   ```json
+   {
+    "orderId": 9309,
+    "restaurantName": "'Ulu Ocean Grill and Sushi Lounge",
+    "dishName": "Postum cereal coffee",
+    "amount": 13.88,
+    "userName": "Edith Johnson"
+   }
+   ```
+   
+## Documentation
+For API documentation, access swagger page:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+```bash
+http://localhost:3000/api/documentation
+```
